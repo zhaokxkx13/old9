@@ -72,7 +72,7 @@ public class MenuController extends BaseController {
     /**
      * 跳转到菜单详情列表页面
      */
-    @Permission(Const.ADMIN_NAME)
+    @Permission
     @RequestMapping(value = "/menu_edit/{menuId}")
     public String menuEdit(@PathVariable Integer menuId, Model model) {
         if (ToolUtil.isEmpty(menuId)) {
@@ -103,7 +103,7 @@ public class MenuController extends BaseController {
     /**
      * 修该菜单
      */
-    @Permission(Const.ADMIN_NAME)
+    @Permission
     @RequestMapping(value = "/edit")
     @BussinessLog(value = "修改菜单", key = "name", dict = Dict.MenuDict)
     @ResponseBody
@@ -121,7 +121,7 @@ public class MenuController extends BaseController {
     /**
      * 获取菜单列表
      */
-    @Permission(Const.ADMIN_NAME)
+    @Permission
     @RequestMapping(value = "/list")
     @ResponseBody
     public Object list(@RequestParam(required = false) String menuName, @RequestParam(required = false) String level) {
@@ -132,7 +132,7 @@ public class MenuController extends BaseController {
     /**
      * 新增菜单
      */
-    @Permission(Const.ADMIN_NAME)
+    @Permission
     @RequestMapping(value = "/add")
     @BussinessLog(value = "菜单新增", key = "name", dict = Dict.MenuDict)
     @ResponseBody
@@ -158,7 +158,7 @@ public class MenuController extends BaseController {
     /**
      * 删除菜单
      */
-    @Permission(Const.ADMIN_NAME)
+    @Permission
     @RequestMapping(value = "/remove")
     @BussinessLog(value = "删除菜单", key = "menuId", dict = Dict.DeleteDict)
     @ResponseBody

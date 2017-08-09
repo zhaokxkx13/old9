@@ -59,7 +59,7 @@ public class PermissionAop {
             if (result) {
                 return point.proceed();
             } else {
-                throw new NoPermissionException();
+                throw new NoPermissionException("没有该权限！");
             }
         }
 

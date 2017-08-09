@@ -177,7 +177,7 @@ public class UserMgrController extends BaseController {
      */
     @RequestMapping("/add")
     @BussinessLog(value = "添加管理员", key = "account", dict = Dict.UserDict)
-    @Permission(Const.ADMIN_NAME)
+    @Permission
     @ResponseBody
     public Tip add(@Valid UserDto user, BindingResult result) {
         if (result.hasErrors()) {
@@ -265,7 +265,7 @@ public class UserMgrController extends BaseController {
      */
     @RequestMapping("/reset")
     @BussinessLog(value = "重置管理员密码", key = "userId", dict = Dict.UserDict)
-    @Permission(Const.ADMIN_NAME)
+    @Permission
     @ResponseBody
     public Tip reset(@RequestParam Integer userId) {
         if (ToolUtil.isEmpty(userId)) {
@@ -284,7 +284,7 @@ public class UserMgrController extends BaseController {
      */
     @RequestMapping("/freeze")
     @BussinessLog(value = "冻结用户", key = "userId", dict = Dict.UserDict)
-    @Permission(Const.ADMIN_NAME)
+    @Permission
     @ResponseBody
     public Tip freeze(@RequestParam Integer userId) {
         if (ToolUtil.isEmpty(userId)) {
@@ -304,7 +304,7 @@ public class UserMgrController extends BaseController {
      */
     @RequestMapping("/unfreeze")
     @BussinessLog(value = "解除冻结用户", key = "userId", dict = Dict.UserDict)
-    @Permission(Const.ADMIN_NAME)
+    @Permission
     @ResponseBody
     public Tip unfreeze(@RequestParam Integer userId) {
         if (ToolUtil.isEmpty(userId)) {
@@ -320,7 +320,7 @@ public class UserMgrController extends BaseController {
      */
     @RequestMapping("/setRole")
     @BussinessLog(value = "分配角色", key = "userId,roleIds", dict = Dict.UserDict)
-    @Permission(Const.ADMIN_NAME)
+    @Permission
     @ResponseBody
     public Tip setRole(@RequestParam("userId") Integer userId, @RequestParam("roleIds") String roleIds) {
         if (ToolUtil.isOneEmpty(userId, roleIds)) {
