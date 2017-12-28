@@ -20,7 +20,7 @@
     </appender>
 
     <!--目录级日志控制-->
-    <logger name="com.cn.iris" level="info"/>
+    <logger name="com.cn.iris" level="ALL"/>
     <!--<logger name="org.springframework" level="error"/>-->
     <!--<logger name="jdbc.connection" level="OFF"/>-->
     <!--<logger name="org.apache" level="error"/>-->

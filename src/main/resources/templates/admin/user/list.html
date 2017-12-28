@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>用户管理</title>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"/>
+    <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet"/>
+    <link href="/css/animate.css" rel="stylesheet"/>
+    <link href="/css/style.css?v=4.1.0" rel="stylesheet"/>
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>基本嵌套列表</h5>
+                </div>
+                <div class="ibox-content">
+
+                    <p class="m-b-lg">
+                        <strong>Nestable</strong> 支持拖动排序和触摸屏。
+                    </p>
+
+                    <div class="dd" id="nestable">
+                        <ol class="dd-list">
+                            <li class="dd-item" data-id="1">
+                                <div class="dd-handle">
+                                    <span class="label label-info"><i class="fa fa-users"></i></span> 群组
+                                </div>
+                                <ol class="dd-list">
+                                    <li class="dd-item" data-id="2">
+                                        <div class="dd-handle">
+                                            <span class="pull-right"> 12:00 </span>
+                                            <span class="label label-info"><i class="fa fa-cog"></i></span> 设置
+                                        </div>
+                                    </li>
+                                    <li class="dd-item" data-id="3">
+                                        <div class="dd-handle">
+                                            <span class="pull-right"> 11:00 </span>
+                                            <span class="label label-info"><i class="fa fa-bolt"></i></span> 筛选
+                                        </div>
+                                    </li>
+                                    <li class="dd-item" data-id="4">
+                                        <div class="dd-handle">
+                                            <span class="pull-right"> 11:00 </span>
+                                            <span class="label label-info"><i class="fa fa-laptop"></i></span> 电脑
+                                        </div>
+                                    </li>
+                                </ol>
+                            </li>
+
+                            <li class="dd-item" data-id="5">
+                                <div class="dd-handle">
+                                    <span class="label label-warning"><i class="fa fa-users"></i></span> 用户
+                                </div>
+                                <ol class="dd-list">
+                                    <li class="dd-item" data-id="6">
+                                        <div class="dd-handle">
+                                            <span class="pull-right"> 15:00 </span>
+                                            <span class="label label-warning"><i class="fa fa-users"></i></span> 列用户表
+                                        </div>
+                                    </li>
+                                    <li class="dd-item" data-id="7">
+                                        <div class="dd-handle">
+                                            <span class="pull-right"> 16:00 </span>
+                                            <span class="label label-warning"><i class="fa fa-bomb"></i></span> 炸弹
+                                        </div>
+                                    </li>
+                                    <li class="dd-item" data-id="8">
+                                        <div class="dd-handle">
+                                            <span class="pull-right"> 21:00 </span>
+                                            <span class="label label-warning"><i class="fa fa-child"></i></span> 子元素
+                                        </div>
+                                    </li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>用户管理</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row row-lg">
+                        <div class="col-sm-12">
+                            <!-- Example Card View -->
+                            <div class="example-wrap">
+                                <div class="example">
+                                    <div class="btn-group hidden-xs" id="exampleToolbar" role="group">
+                                        <button class="btn btn-outline btn-success  dim" type="button" onclick="add();">
+                                            <i class="fa fa-plus">&nbsp;新增</i>
+                                        </button>
+                                        <button class="btn btn-outline btn-info  dim" type="button">
+                                            <i class="fa fa-paste">&nbsp;查看</i>
+                                        </button>
+                                        <button class="btn btn-outline btn-warning  dim" type="button">
+                                            <i class="fa fa-edit">&nbsp;编辑</i>
+                                        </button>
+                                        <button class="btn btn-outline btn-danger  dim " type="button">
+                                            <i class="fa fa-trash">&nbsp;删除</i>
+                                        </button>
+                                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-outline btn-primary dim" type="button"><i class="fa fa-search">&nbsp;搜索</i></button>
+                                            </span>
+                                            <input type="text" placeholder="请输入用户名称" class="form-control input-lg"/>
+                                        </div>
+                                    </div>
+                                    <table id="table_list"></table>
+                                </div>
+                            </div>
+                            <!-- End Example Card View -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="/js/jquery.min.js?v=2.1.4"></script>
+<script src="/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- Bootstrap table -->
+<script src="/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script src="/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+<!-- Peity -->
+<script src="/js/plugins/peity/jquery.peity.min.js"></script>
+<script src="/js/plugins/layer/layer.min.js"></script>
+
+<!-- 自定义js -->
+<!-- <script src="${ctx!}/admin/js/content.js?v=1.0.0"></script> -->
+<script src="/js/admin/user/list.js"></script>
+
+<script src="/js/plugins/artTemplate/template.js"></script>
+<script src="/js/plugins/nestable/jquery.nestable.js"></script>
+
+<script id="operateHtml" type="text/html">
+    <button class="btn btn-primary btn-xs" type="button" onclick="edit('{{row.id}}')">
+        <i class="fa fa-edit"></i>&nbsp;修改
+    </button> &nbsp;
+    <button class="btn btn-danger btn-xs" type="button" onclick="del('{{row.id}}')">
+        <i class="fa fa-remove"></i>&nbsp;删除
+    </button> &nbsp;
+</script>
+
+<!-- Page-Level Scripts -->
+<script>
+    $(document).ready(function () {
+
+        var updateOutput = function (e) {
+            var list = e.length ? e : $(e.target),
+                output = list.data('output');
+            if (window.JSON) {
+                output.val(window.JSON.stringify(list.nestable('serialize'))); //, null, 2));
+            } else {
+                output.val('浏览器不支持');
+            }
+        };
+
+        // activate Nestable for list 2
+        $('#nestable').nestable({
+            group: 1
+        }).on('change', updateOutput);
+
+        // output initial serialised data
+        //updateOutput($('#nestable').data('output', $('#nestable-output')));
+
+        $('#nestable-menu').on('click', function (e) {
+            var target = $(e.target),
+                action = target.data('action');
+            if (action === 'expand-all') {
+                $('.dd').nestable('expandAll');
+            }
+            if (action === 'collapse-all') {
+                $('.dd').nestable('collapseAll');
+            }
+        });
+    });
+</script>
+</body>
+
+</html>
