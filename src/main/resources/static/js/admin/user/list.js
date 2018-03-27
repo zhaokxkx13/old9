@@ -23,7 +23,7 @@ $(document).ready(function () {
         //是否显示 内容列下拉框
         showColumns:true,
         //是否显示 切换试图（table/card）按钮
-        showToggle:true,
+        //showToggle:true,
         //点击行时，自动选择checkbox
         clickToSelect:true,
         //工具条
@@ -33,6 +33,8 @@ $(document).ready(function () {
         //detailFormatter:detailFormatter,
         //表示服务端请求
         sidePagination: "server",
+        //单选，默认false
+        singleSelect:true,
         //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
         //设置为limit可以获取limit, offset, search, sort, order
         queryParamsType: "undefined",
@@ -44,41 +46,27 @@ $(document).ready(function () {
             };
         },
         //数据列
-        columns: [{
-            title: "ID",
-            field: "id",
-            checkbox:true
-        },{
-            title: "账号",
-            field: "userAcc"
-        },{
-            title: "昵称",
-            field: "nickName"
-        },{
-            title: "盐资源",
-            field: "salt"
-        },{
-            title: "头像",
-            field: "avatar"
-        },{
-            title: "创建日期",
-            field: "createTime",
-            formatter:function (value, row, index) {
-                return changeDateFormat(value)
-            }
-        },{
-            title: "状态",
-            sortable: true,
-            field: "status",
-            formatter: function (value, row, index) {
-                if (value == '-1')
-                    return '<span class="label label-danger">锁定</span>';
-                else if (value == '0')
-                    return '<span class="label label-info">未激活</span>';
-                else
-                    return '<span class="label label-primary">已激活</span>';
-            }
-        },/*{
+        columns: [
+            {field: "checkbox",checkbox:true},
+            {title: "ID",field: "id"},
+            {title: "账号",field: "userAcc"},
+            {title: "昵称",field: "nickName"},
+            {title: "所属部门",field: "deptName"},
+            {title: "盐资源",field: "salt"},
+            {title: "头像",field: "avatar"},
+            {title: "创建日期",field: "createTime",
+                formatter:function (value, row, index) {
+                    return changeDateFormat(value)
+                }},
+            {title: "状态",sortable: true,field: "status",
+                formatter: function (value, row, index) {
+                    if (value == '-1')
+                        return '<span class="label label-danger">锁定</span>';
+                    else if (value == '0')
+                        return '<span class="label label-info">未激活</span>';
+                    else
+                        return '<span class="label label-primary">已激活</span>';
+                }}/*{
             title: "操作",
             field: "empty",
             formatter: function (value, row, index) {
@@ -88,52 +76,97 @@ $(document).ready(function () {
     });
 });
 
-function edit(id){
-    layer.open({
-        type: 2,
-        title: '用户修改',
-        shadeClose: true,
-        shade: false,
-        area: ['893px', '600px'],
-        content: 'xxxx/user/form?id=' + id,
-        end: function(index){
-            $('#table_list').bootstrapTable("refresh");
-        }
-    });
-}
-function add(){
+//新增
+function addUser(){
     layer.open({
         type: 2,
         title: '用户新增',
         shade: 0.5,
         area: ['85%', '80%'],
-        content: '/user/form',
-        end: function(index){
+        content: '/user/add',
+        end: function(){
             $('#table_list').bootstrapTable("refresh");
         }
     });
 }
-function del(id){
-    layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: "xxxxx/user/" + id + "/del",
-            success: function(msg){
-                layer.msg(msg.msg||"删除成功", {time: 2000},function(){
-                    $('#table_list').bootstrapTable("refresh");
-                    layer.close(index);
-                });
+//查看
+function showUser() {
+    var selectNodes = $("#table_list").bootstrapTable('getSelections');
+    if(selectNodes.length == 1){
+        layer.open({
+            type: 2,
+            title: '查看用户信息',
+            shade: 0.5,
+            area: ['85%', '80%'],
+            content: '/user/show?id='+selectNodes[0].id
+        });
+    }else{
+        layer.tips('请选择一条记录！', "#showButton", {
+            tips: [1, '#3595CC'],
+            time: 3000
+        });
+    }
+}
+//编辑
+function editUser(){
+    var selectNodes = $("#table_list").bootstrapTable('getSelections');
+    if(selectNodes.length == 1){
+        layer.open({
+            type: 2,
+            title: '修改用户信息',
+            shade: 0.5,
+            area: ['85%', '80%'],
+            content: '/user/edit?id='+selectNodes[0].id,
+            end: function(){
+                $('#table_list').bootstrapTable("refresh");
             }
         });
-    });
+    }else{
+        layer.tips('请选择一条记录！', "#editButton", {
+            tips: [1, '#3595CC'],
+            time: 3000
+        });
+    }
+}
+//删除
+function delUser(){
+    var selectNodes = $("#table_list").bootstrapTable('getSelections');
+    if(selectNodes.length == 1){
+        layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(){
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '/user/delUser?id='+selectNodes[0].id,
+                success: function(ret){
+                    if(ret.success){
+                        layer.msg("删除成功！", {time: 1500},null);
+                        $('#table_list').bootstrapTable("refresh");
+                    }else{
+                        layer.msg("删除失败："+ret.message, {time: 1500,icon:2});
+                    }
+                }
+            });
+        });
+    }else{
+        layer.tips('请选择一条记录！', "#delButton", {
+            tips: [1, '#3595CC'],
+            time: 3000
+        });
+    }
 }
 
-function detailFormatter(index, row) {
+function searchUser() {
+    var param = {
+        url: "/user/list?userAcc="+$("#searchAcc").val()
+    };
+    $('#table_list').bootstrapTable('refresh',param);
+}
+
+/*function detailFormatter(index, row) {
     var html = [];
     html.push('<p><b>描述:</b> ' + row.description + '</p>');
     return html.join('');
-}
+}*/
 
 //修改——转换日期格式(时间戳转换为datetime格式)1512716658000
 function changeDateFormat(cellval) {
@@ -148,6 +181,4 @@ function changeDateFormat(cellval) {
     }
 }
 
-function addSysUser() {
-    alert(1);
-}
+

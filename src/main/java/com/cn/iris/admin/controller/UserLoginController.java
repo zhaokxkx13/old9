@@ -2,7 +2,9 @@ package com.cn.iris.admin.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.cn.iris.admin.entity.Dept;
 import com.cn.iris.admin.entity.User;
+import com.cn.iris.admin.service.IDeptService;
 import com.cn.iris.admin.service.IUserService;
 import com.cn.iris.common.util.AjaxRetBean;
 import com.cn.iris.common.util.ResWriteUtil;
@@ -13,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
@@ -31,30 +32,56 @@ public class UserLoginController {
 
     @Autowired
     private IUserService userServiceImpl;
+    @Autowired
+    private IDeptService deptServiceImpl;
 
     @GetMapping("/index")
-    public String index(HttpServletRequest request, Model model) {
-        return "admin/user/list";
+    public String index() {
+        return "/admin/user/list";
     }
 
     @GetMapping("/list")
     @ResponseBody
-    public Page<User> listUsers(HttpServletRequest request) {
-        Page<User> page = userServiceImpl.selectUserPage(new Page<User>(0, 12));
+    public Page<User> listUsers(User user) {
+        Page<User> page = userServiceImpl.selectUserPage(new Page<>(0, 12),user.getUserAcc());
         return page;
     }
 
-    @GetMapping("/form")
-    public String form(@RequestParam(required=false) Long id,Model model){
-        if(id != null){
-            User user = userServiceImpl.selectById(id);
-            model.addAttribute("user",user);
-        }
-        return "admin/user/form";
+    @GetMapping("/add")
+    public String addUser(){
+        return "admin/user/addForm";
     }
 
-    @PostMapping("/save")
-    public void save(User user,HttpServletResponse response){
+    @GetMapping("/show")
+    public String showUser(@RequestParam Long id,Model model){
+        if(id != null){
+            User user = userServiceImpl.selectById(id);
+            if(user != null && user.getId() != null){
+                Dept userDept = deptServiceImpl.selectById(user.getDeptId());
+                user.setDeptName(userDept.getName());
+                model.addAttribute("user",user);
+                return "admin/user/showForm";
+            }
+        }
+        return "error/404";
+    }
+
+    @GetMapping("/edit")
+    public String editUser(@RequestParam Long id,Model model){
+        if(id != null){
+            User user = userServiceImpl.selectById(id);
+            if(user != null && user.getId() != null){
+                Dept userDept = deptServiceImpl.selectById(user.getDeptId());
+                user.setDeptName(userDept.getName());
+                model.addAttribute("user",user);
+                return "admin/user/editForm";
+            }
+        }
+        return "error/404";
+    }
+
+    @PostMapping("/saveAdd")
+    public void saveAdd(User user,HttpServletResponse response){
         AjaxRetBean<JSONObject> returnBean =  new AjaxRetBean<> ();
         user.setCreateTime(new Date());
         user.setStatus(1);
@@ -77,6 +104,52 @@ public class UserLoginController {
             logger.error(e.getMessage());
             returnBean.setSuccess(false);
             returnBean.setMessage(e.getMessage());
+        }
+        ResWriteUtil.writeObject(response,returnBean);
+    }
+
+    @PostMapping("/saveEdit")
+    public void saveEdit(User user,HttpServletResponse response){
+        AjaxRetBean<JSONObject> returnBean =  new AjaxRetBean<> ();
+        user.setCreateTime(new Date());
+        try {
+            if(user.getUserPsw().equals(user.getUserPsw2())){
+                userServiceImpl.updateUserById(user);
+                returnBean.setSuccess(true);
+            }else{
+                returnBean.setSuccess(false);
+                returnBean.setMessage("密码不一致！");
+            }
+
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            returnBean.setSuccess(false);
+            returnBean.setMessage("修改失败："+e.getMessage());
+        }
+        ResWriteUtil.writeObject(response,returnBean);
+    }
+
+    @PostMapping("/delUser")
+    public void delete(@RequestParam Long id,HttpServletResponse response){
+        AjaxRetBean<JSONObject> returnBean =  new AjaxRetBean<> ();
+        try {
+            User user = userServiceImpl.selectById(id);
+            if(user != null && user.getId() != null){
+                boolean flag = userServiceImpl.deleteById(id);
+                if(flag){
+                    returnBean.setSuccess(true);
+                }else{
+                    returnBean.setSuccess(false);
+                    returnBean.setMessage("删除失败！");
+                }
+            }else {
+                returnBean.setSuccess(false);
+                returnBean.setMessage("用户不存在！");
+            }
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            returnBean.setSuccess(false);
+            returnBean.setMessage("删除失败："+e.getMessage());
         }
         ResWriteUtil.writeObject(response,returnBean);
     }

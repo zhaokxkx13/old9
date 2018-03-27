@@ -32,4 +32,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper,Menu> implements IMe
         List<Menu> list = menuMapper.getMenuListByRoleId(roleIds);
         return list;
     }
+
+    @Override
+    public boolean deleteAllChildren(Long pId) {
+        return menuMapper.deleteAllChildren(pId);
+    }
 }

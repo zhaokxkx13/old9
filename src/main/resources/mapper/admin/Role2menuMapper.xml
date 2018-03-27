@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.iris.admin.mapper.Role2menuMapper">
+
+    <select id="getMenuIdsByRoleId" resultType="java.lang.Long" parameterType="java.lang.Long">
+        SELECT menu_id FROM sys_role2menu WHERE role_id=#{roleIds}
+    </select>
+    
+    <delete id="deleteAllMenuByRoleId" parameterType="java.lang.Long">
+        DELETE FROM sys_role2menu WHERE role_id=#{roleIds}
+    </delete>
+
+</mapper>

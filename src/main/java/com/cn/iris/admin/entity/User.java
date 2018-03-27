@@ -33,10 +33,15 @@ public class User extends Model<User> {
     private String salt;
     private Integer status;
     private String roleId;
+    private Long deptId;
 
     //=============================
     @TableField(exist=false)
     private List<String> roleIds;
+    @TableField(exist=false)
+    private String deptName;
+    @TableField(exist=false)
+    private String userPsw2;
 
 
     @Override
@@ -148,5 +153,29 @@ public class User extends Model<User> {
 
     public List<String> getRoleIds() {
         return roleIds;
+    }
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    public String getUserPsw2() {
+        return userPsw2;
+    }
+
+    public void setUserPsw2(String userPsw2) {
+        this.userPsw2 = userPsw2;
     }
 }

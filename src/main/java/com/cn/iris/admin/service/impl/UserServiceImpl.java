@@ -1,5 +1,7 @@
 package com.cn.iris.admin.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.cn.iris.admin.entity.User;
@@ -25,8 +27,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements IUs
     }
 
     @Override
-    public Page<User> selectUserPage(Page<User> page) {
-        page.setRecords(userMapper.selectUserList(page));
+    public Page<User> selectUserPage(Page<User> page, String userAcc) {
+        page.setRecords(userMapper.selectUserList(page,userAcc));
         return page;
+    }
+
+    @Override
+    public void updateUserById(User user) {
+        userMapper.updateUserById(user);
     }
 }

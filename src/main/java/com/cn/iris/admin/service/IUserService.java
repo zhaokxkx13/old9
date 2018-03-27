@@ -13,5 +13,7 @@ public interface IUserService extends IService<User>{
 
     User findByAcc(String user_acc);
 
-    Page<User> selectUserPage(Page<User> page);
+    Page<User> selectUserPage(Page<User> page, String userAcc);
+
+    void updateUserById(User user);
 }

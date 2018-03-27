@@ -11,5 +11,5 @@ import com.cn.iris.admin.entity.Role;
  */
 public interface IRoleService extends IService<Role>{
 
-    Page<Role> selectRolePage(Page<Role> page);
+    Page<Role> selectRolePage(Page<Role> page, String name);
 }

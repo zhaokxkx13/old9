@@ -13,5 +13,5 @@ import java.util.List;
  */
 public interface RoleMapper extends BaseMapper<Role> {
 
-    List<Role> selectRoleList(Page page);
+    List<Role> selectRoleList(Page page, String name);
 }

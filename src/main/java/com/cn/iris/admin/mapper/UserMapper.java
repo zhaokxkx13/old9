@@ -15,6 +15,8 @@ public interface UserMapper extends BaseMapper<User> {
 
     User findByAcc(String user_acc);
 
-    List<User> selectUserList(Page page);
+    List<User> selectUserList(Page page, String userAcc);
+
+    void updateUserById(User user);
 
 }

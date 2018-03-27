@@ -16,4 +16,6 @@ public interface IMenuService extends IService<Menu>{
     Page<Menu> selectMenuPage(Page<Menu> page);
 
     List<Menu> getMenuListByRoleId(List<String> roleIds);
+
+    boolean deleteAllChildren(Long pId);
 }

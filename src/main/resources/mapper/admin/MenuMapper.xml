@@ -18,11 +18,15 @@
     </select>
 
     <select id="getMenuListByRoleId" resultType="com.cn.iris.admin.entity.Menu">
-        SELECT a.* from SYS_MENU a,SYS_ROLE2MENU b WHERE a.id=b.menuid and b.roleid IN
+        SELECT a.* from SYS_MENU a,SYS_ROLE2MENU b WHERE a.id=b.menu_id and b.role_id IN
         <foreach collection="list" index="index" item="roleIds" open="(" separator="," close=")">
             #{roleIds}
         </foreach>
-        AND is_menu=1 AND status=1 and is_open=1
+        AND is_menu=1 AND status=1
     </select>
+
+    <delete id="deleteAllChildren" parameterType="java.lang.Long">
+        DELETE FROM sys_menu WHERE p_ids like CONCAT('%[',#{pId},']%')
+    </delete>
 
 </mapper>

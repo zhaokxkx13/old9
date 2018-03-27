@@ -12,13 +12,30 @@
         <result column="state" property="state" />
         <result column="remarks" property="remarks" />
     </resultMap>-->
+    <sql id="columns" >
+        a.id, a.user_acc, a.user_psw, a.nick_name, a.avatar, a.create_time, a.description, a.salt, a.status,a.role_id,a.dept_id
+    </sql>
 
     <select id="findByAcc" resultType="com.cn.iris.admin.entity.User" parameterType="java.lang.String">
-        SELECT id, user_acc, user_psw, nick_name, avatar, create_time, description, salt, status,role_id from sys_user where user_acc=#{user_acc}
+        SELECT <include refid="columns"/> from sys_user a where user_acc=#{user_acc}
     </select>
 
-    <select id="selectUserList" resultType="com.cn.iris.admin.entity.User">
-        SELECT id, user_acc, user_psw, nick_name, avatar, create_time, description, salt, status,role_id FROM sys_user
+    <select id="selectUserList" resultType="com.cn.iris.admin.entity.User" parameterType="java.lang.String">
+        SELECT <include refid="columns"/>, b.name as dept_name FROM sys_user a
+        LEFT JOIN sys_dept b ON a.dept_id = b.id
+        <if test="_parameter != null and _parameter != ''">
+            WHERE a.user_acc like CONCAT('%',#{userAcc},'%')
+        </if>
     </select>
+    
+    <update id="updateUserById" parameterType="com.cn.iris.admin.entity.User">
+        UPDATE sys_user
+          SET user_psw = #{userPsw},
+               nick_name = #{nickName},
+               create_time = #{createTime},
+               description = #{description},
+               dept_id = #{deptId}
+        WHERE id = #{id}
+    </update>
 
 </mapper>

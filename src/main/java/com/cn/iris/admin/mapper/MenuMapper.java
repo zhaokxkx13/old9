@@ -16,4 +16,6 @@ public interface MenuMapper extends BaseMapper<Menu> {
     List<Menu> selectMenuList(Page page);
 
     List<Menu> getMenuListByRoleId(List<String> roleIds);
+
+    boolean deleteAllChildren(Long pId);
 }

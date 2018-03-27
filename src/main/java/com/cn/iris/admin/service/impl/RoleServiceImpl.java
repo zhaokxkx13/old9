@@ -20,8 +20,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper,Role> implements IRo
     private RoleMapper roleMapper;
 
     @Override
-    public Page<Role> selectRolePage(Page<Role> page) {
-        page.setRecords(roleMapper.selectRoleList(page));
+    public Page<Role> selectRolePage(Page<Role> page, String name) {
+        page.setRecords(roleMapper.selectRoleList(page,name));
         return page;
     }
 }

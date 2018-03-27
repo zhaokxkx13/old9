@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>用户管理</title>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"/>
+    <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet"/>
+    <link href="/css/animate.css" rel="stylesheet"/>
+    <link href="/css/style.css?v=4.1.0" rel="stylesheet"/>
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>角色管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="btn-group hidden-xs" id="exampleToolbar" role="group">
+                            <div class="col-sm-8">
+                                <button class="btn btn-outline btn-success dim" type="button" onclick="addRole();">
+                                    <i class="fa fa-plus">&nbsp;新增</i>
+                                </button>
+                                <button id="editButton" class="btn btn-outline btn-warning dim" type="button" onclick="editRole();">
+                                    <i class="fa fa-edit">&nbsp;编辑</i>
+                                </button>
+                                <button id="delButton" class="btn btn-outline btn-danger dim " type="button" onclick="delRole();">
+                                    <i class="fa fa-trash">&nbsp;删除</i>
+                                </button>
+                                <button id="permButton" class="btn btn-outline btn-info dim " type="button" onclick="permRole();">
+                                    <i class="fa fa-trash">&nbsp;权限</i>
+                                </button>
+                            </div>
+                            <div class="input-group col-sm-4">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-outline btn-primary dim" type="button" onclick="searchRole();"><i class="fa fa-search">&nbsp;搜索</i></button>
+                                </span>
+                                <input type="text" id="searchName" placeholder="请输入角色名称" class="form-control input-lg"/>
+                            </div>
+                        </div>
+                        <table id="roleList" class="table table-bordered"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="/js/jquery.min.js?v=2.1.4"></script>
+<script src="/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- Bootstrap table -->
+<script src="/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script src="/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+<!-- Peity -->
+<script src="/js/plugins/peity/jquery.peity.min.js"></script>
+<script src="/js/plugins/layer/layer.min.js"></script>
+
+<!-- 自定义js -->
+<script src="/js/admin/role/list.js"></script>
+
+</body>
+
+</html>

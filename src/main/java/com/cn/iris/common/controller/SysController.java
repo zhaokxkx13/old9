@@ -65,7 +65,7 @@ public class SysController {
             }
         }
         model.addAttribute("userMenus",resultList);
-        System.out.println(resultList.size());
+        //System.out.println(resultList.size());
         model.addAttribute("user", user);
         return "index";
     }
@@ -76,9 +76,4 @@ public class SysController {
         return "first";
     }
 
-    //错误页
-    @RequestMapping(value = "/error",method = RequestMethod.GET)
-    public String error(HttpServletRequest request, Model model) {
-        return "error/404";
-    }
 }

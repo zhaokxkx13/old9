@@ -1,12 +1,15 @@
 package com.cn.iris.admin.entity;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+import com.cn.iris.common.entity.State;
+import com.cn.iris.common.entity.TreeEntity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -15,15 +18,15 @@ import java.util.List;
  * Date: 2017/12/18 13:59
  */
 @TableName("sys_menu")
-public class Menu extends Model<Menu>{
+public class Menu extends Model<Menu> implements TreeEntity<Menu> {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Long id;
     private String code;
-    private String pCode;
-    private String pCodes;
+    private Long pId;
+    private String pIds;
     private String name;
     private String icon;
     private String url;
@@ -33,36 +36,39 @@ public class Menu extends Model<Menu>{
     private int status;
     private int isOpen;
 
-    //======================
-    private List<String> pCodesList;
+    //=======首页菜单用=========
+    @TableField(exist=false)
     private List<Menu> listChildren;    //菜单使用：1级菜单的所有子菜单
+    //=======菜单树用===========
+    @TableField(exist=false)
+    private List<Menu> nodes;
+    @TableField(exist=false)
+    private String text;
+    @TableField(exist=false)
+    private List<String> tags;
+    @TableField(exist=false)
+    private State state;
 
     @Override
     protected Serializable pkVal() {
         return this.id;
     }
 
-    @Override
-    public String toString() {
-        return "Menu{" +
-                "id=" + id +
-                ", code='" + code + '\'' +
-                ", pCode='" + pCode + '\'' +
-                ", pCodes='" + pCodes + '\'' +
-                ", name='" + name + '\'' +
-                ", icon='" + icon + '\'' +
-                ", url='" + url + '\'' +
-                ", levels=" + levels +
-                ", isMenu=" + isMenu +
-                ", others='" + others + '\'' +
-                ", status=" + status +
-                ", isOpen=" + isOpen +
-                '}';
-    }
 
     public Long getId() {
         return id;
     }
+
+    public Long getParentId() {
+        return this.pId;
+    }
+
+    public void setChildList(List<Menu> childList) {
+        this.nodes=childList;
+    }
+
+
+    //==============各get&set方法============
 
     public void setId(Long id) {
         this.id = id;
@@ -76,26 +82,20 @@ public class Menu extends Model<Menu>{
         this.code = code;
     }
 
-    public String getpCode() {
-        return pCode;
+    public Long getpId() {
+        return pId;
     }
 
-    public void setpCode(String pCode) {
-        this.pCode = pCode;
+    public void setpId(Long pId) {
+        this.pId = pId;
     }
 
-    public String getpCodes() {
-        return pCodes;
+    public String getpIds() {
+        return pIds;
     }
 
-    public void setpCodes(String pCodes) {
-        this.pCodes = pCodes;
-        if (pCodes != null && pCodes.contains(",")){
-            this.pCodesList = Arrays.asList(pCodes.split(","));
-        }else{
-            this.pCodesList = new ArrayList<>();
-            this.pCodesList.add(pCodes);
-        }
+    public void setpIds(String pIds) {
+        this.pIds = pIds;
     }
 
     public String getName() {
@@ -104,6 +104,7 @@ public class Menu extends Model<Menu>{
 
     public void setName(String name) {
         this.name = name;
+        this.text = name;
     }
 
     public String getIcon() {
@@ -128,6 +129,8 @@ public class Menu extends Model<Menu>{
 
     public void setLevels(int levels) {
         this.levels = levels;
+        this.tags = new ArrayList<>();
+        this.tags.add(String.valueOf(levels));
     }
 
     public int getIsMenu() {
@@ -162,8 +165,12 @@ public class Menu extends Model<Menu>{
         this.isOpen = isOpen;
     }
 
-    public List<String> getpCodesList() {
-        return pCodesList;
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public List<Menu> getListChildren() {
@@ -173,8 +180,32 @@ public class Menu extends Model<Menu>{
     public void setListChildren(List<Menu> listAll) {
         this.listChildren = new ArrayList<>();
         for(Menu menu : listAll){
-            if (menu.getpCode().equals(this.getCode()))
+            if (menu.getpId().equals(this.getId()))
                 listChildren.add(menu);
         }
+    }
+
+    public List<Menu> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(List<Menu> childListTree) {
+        this.nodes = childListTree;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 }

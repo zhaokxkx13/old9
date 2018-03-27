@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>角色权限</title>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"/>
+    <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet"/>
+    <link href="/css/animate.css" rel="stylesheet"/>
+    <link href="/css/style.css?v=4.1.0" rel="stylesheet"/>
+    <link href="/css/plugins/treeview/bootstrap-treeview.css" rel="stylesheet"/>
+</head>
+
+<body class="gray-bg">
+<div class="ibox-content">
+    <div id="permissionsTree"></div>
+    <input type="hidden" id="roleId" name="roleId" th:value="${role.id}"/>
+</div>
+&nbsp;
+<div class="row" align="center">
+    <a id="saveButton" class="btn btn-primary btn-rounded" onclick="savePermissions()"><i class="fa fa-check-circle"></i> 保存</a>
+    &nbsp;
+    <a id="cancelButton" class="btn btn-danger btn-rounded" onclick="cancel()"><i class="fa fa-check-circle"></i> 取消</a>
+</div>
+&nbsp;
+<!-- 全局js -->
+<script src="/js/jquery.min.js?v=2.1.4"></script>
+<script src="/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- Bootstrap table -->
+<script src="/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script src="/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+<!-- Peity -->
+<script src="/js/plugins/peity/jquery.peity.min.js"></script>
+<script src="/js/plugins/layer/layer.min.js"></script>
+
+<!-- 自定义js -->
+<script src="/js/admin/role/permissionsTree.js"></script>
+
+<!-- Bootstrap-Treeview plugin javascript-->
+<script src="/js/plugins/treeview/bootstrap-treeview.js"></script>
+
+</body>
+
+</html>
