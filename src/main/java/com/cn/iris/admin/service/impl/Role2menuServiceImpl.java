@@ -26,6 +26,16 @@ public class Role2menuServiceImpl extends ServiceImpl<Role2menuMapper,Role2menu>
     }
 
     @Override
+    public List<Long> getMenuIdsByRoleIds(List<String> roleIds) {
+        return role2menuMapper.getMenuIdsByRoleIds(roleIds);
+    }
+
+    @Override
+    public List<String> getMenuCodesByRoleIds(List<String> roleIds) {
+        return role2menuMapper.getMenuCodesByRoleIds(roleIds);
+    }
+
+    @Override
     public void deleteAllMenuByRoleId(Long roleId) {
         role2menuMapper.deleteAllMenuByRoleId(roleId);
     }

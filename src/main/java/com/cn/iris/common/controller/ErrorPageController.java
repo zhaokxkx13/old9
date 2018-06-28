@@ -23,6 +23,11 @@ public class ErrorPageController {
         return "error/401";
     }
 
+    @RequestMapping(value = "/403",method = RequestMethod.GET)
+    public String error403() {
+        return "error/403";
+    }
+
     @RequestMapping(value = "/404",method = RequestMethod.GET)
     public String error404() {
         return "error/404";

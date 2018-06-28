@@ -4,8 +4,6 @@
     <!-- 此xml在spring-boot-1.5.3.RELEASE.jar里 -->
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
     <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
-    <!-- 开启后可以通过jmx动态控制日志级别(springboot Admin的功能) -->
-    <!--<jmxConfigurator/>-->
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${LOG_PATH}${LOG_FILE}</File>
@@ -20,7 +18,7 @@
     </appender>
 
     <!--目录级日志控制-->
-    <logger name="com.cn.iris" level="ALL"/>
+    <logger name="com.cn.iris" level="DEBUG"/> <!--ERROR、WARN、INFO、DEBUG -->
     <!--<logger name="org.springframework" level="error"/>-->
     <!--<logger name="jdbc.connection" level="OFF"/>-->
     <!--<logger name="org.apache" level="error"/>-->

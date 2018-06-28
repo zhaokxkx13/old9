@@ -32,7 +32,7 @@ public class DeptController {
 
     @GetMapping("/index")
     public String deptIndex() {
-        return "/admin/dept/list";
+        return "admin/dept/list";
     }
 
     @GetMapping("/list")

@@ -13,8 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
  * Description:拦截器
  * Date: 2017/12/14 14:02
  */
-@Component
-public class LoginInterceptor implements HandlerInterceptor {
+//@Component
+/*public class LoginInterceptor implements HandlerInterceptor {
 
 	//在请求处理之前进行调用（Controller方法调用之前）
 	@Override
@@ -40,4 +40,4 @@ public class LoginInterceptor implements HandlerInterceptor {
 			throws Exception {
 		// do something 不处理
 	}
-}
+}*/

@@ -49,13 +49,13 @@ public class RoleController {
 
     @GetMapping("/index")
     public String index() {
-        return "/admin/role/list";
+        return "admin/role/list";
     }
 
     @GetMapping("/list")
     @ResponseBody
     public Page<Role> listUsers(Role role) {
-        Page<Role> page = roleServiceImpl.selectRolePage(new Page<>(0, 12),role.getName());
+        Page<Role> page = roleServiceImpl.selectRolePage(new Page<>(0, 1000),role.getName());
         logger.info("角色列表信息:"+page);
         return page;
     }

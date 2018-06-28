@@ -32,6 +32,7 @@
         UPDATE sys_user
           SET user_psw = #{userPsw},
                nick_name = #{nickName},
+               role_id = #{roleId},
                create_time = #{createTime},
                description = #{description},
                dept_id = #{deptId}

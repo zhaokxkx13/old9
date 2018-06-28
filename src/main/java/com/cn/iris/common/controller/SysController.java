@@ -4,6 +4,9 @@ import com.cn.iris.admin.entity.Menu;
 import com.cn.iris.admin.entity.User;
 import com.cn.iris.admin.service.IMenuService;
 import com.cn.iris.admin.service.IUserService;
+import com.cn.iris.common.core.shiro.ShiroUtil;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,26 +37,39 @@ public class SysController {
 
     //跳转至登陆页
     @GetMapping("/welcome")
-    public String hello(HttpServletRequest request, Model model) {
-        request.setAttribute("ctx", request.getContextPath());
-        return "login";
+    public String hello() {
+        return "/login";
     }
 
     @GetMapping("/userlogin")
     public String index(HttpServletRequest request, String userAcc, String userPsw) {
+        String codeMsg = (String) request.getAttribute("shiroLoginFailure");
+        if ("code.error".equals(codeMsg)) {
+            //model.addAttribute("message", "验证码错误");
+            return "/welcome";
+        }
+        Subject subject = ShiroUtil.getSubject();
+        UsernamePasswordToken token = new UsernamePasswordToken(userAcc.trim(),userPsw);
+        subject.login(token);
+
         User user = userServiceImpl.findByAcc(userAcc);
-        request.setAttribute("ctx", request.getContextPath());
         if(user.getUserPsw().equals(userPsw)){
             logger.info("用户登陆："+user.getNickName());
-            request.getSession().setAttribute("iris_user",user);
             return "redirect:/index";
         }
         return "login";
     }
 
+    //跳转至登陆页
+    @GetMapping("/logOut")
+    public String logOut() {
+        ShiroUtil.getSubject().logout();
+        return "/login";
+    }
+
     @RequestMapping("/index")
     public String index(HttpServletRequest request, Model model) {
-        User user = (User) request.getSession().getAttribute("iris_user");
+        User user = ShiroUtil.getUser();
         //通过用户角色获取菜单权限
         List<Menu> menuList = menuServiceImpl.getMenuListByRoleId(user.getRoleIds());
         List<Menu> resultList = new ArrayList<>();
@@ -65,7 +80,6 @@ public class SysController {
             }
         }
         model.addAttribute("userMenus",resultList);
-        //System.out.println(resultList.size());
         model.addAttribute("user", user);
         return "index";
     }

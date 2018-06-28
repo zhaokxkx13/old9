@@ -3,11 +3,14 @@ package com.cn.iris.admin.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.cn.iris.admin.entity.Dept;
+import com.cn.iris.admin.entity.Role;
 import com.cn.iris.admin.entity.User;
 import com.cn.iris.admin.service.IDeptService;
+import com.cn.iris.admin.service.IRoleService;
 import com.cn.iris.admin.service.IUserService;
 import com.cn.iris.common.util.AjaxRetBean;
 import com.cn.iris.common.util.ResWriteUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -34,10 +38,12 @@ public class UserLoginController {
     private IUserService userServiceImpl;
     @Autowired
     private IDeptService deptServiceImpl;
+    @Autowired
+    private IRoleService roleServiceImpl;
 
     @GetMapping("/index")
     public String index() {
-        return "/admin/user/list";
+        return "admin/user/list";
     }
 
     @GetMapping("/list")
@@ -48,6 +54,7 @@ public class UserLoginController {
     }
 
     @GetMapping("/add")
+    @RequiresPermissions(value = "usermgr_add")
     public String addUser(){
         return "admin/user/addForm";
     }
@@ -59,12 +66,18 @@ public class UserLoginController {
             if(user != null && user.getId() != null){
                 Dept userDept = deptServiceImpl.selectById(user.getDeptId());
                 user.setDeptName(userDept.getName());
+                List<String> roleIds = user.getRoleIds();
+                for(String roleId:roleIds){
+                    Role temp = roleServiceImpl.selectById(roleId);
+                    user.addRoleNames(temp.getName());
+                }
                 model.addAttribute("user",user);
                 return "admin/user/showForm";
             }
         }
         return "error/404";
     }
+    //TODO 保存方法保存roleIds需修改！
 
     @GetMapping("/edit")
     public String editUser(@RequestParam Long id,Model model){
@@ -73,11 +86,16 @@ public class UserLoginController {
             if(user != null && user.getId() != null){
                 Dept userDept = deptServiceImpl.selectById(user.getDeptId());
                 user.setDeptName(userDept.getName());
+                List<String> roleIds = user.getRoleIds();
+                for(String roleId:roleIds){
+                    Role temp = roleServiceImpl.selectById(roleId);
+                    user.addRoleNames(temp.getName());
+                }
                 model.addAttribute("user",user);
                 return "admin/user/editForm";
             }
         }
-        return "error/404";
+        return "redirect:/404";
     }
 
     @PostMapping("/saveAdd")
@@ -85,7 +103,7 @@ public class UserLoginController {
         AjaxRetBean<JSONObject> returnBean =  new AjaxRetBean<> ();
         user.setCreateTime(new Date());
         user.setStatus(1);
-        user.setRoleId("1");
+        user.setRoleId(user.getRoleId().replaceAll("\\[","").replaceAll("]",""));
         try {
             User tempUser = userServiceImpl.findByAcc(user.getUserAcc());
             if(tempUser != null  && tempUser.getId()!=null){
@@ -112,6 +130,7 @@ public class UserLoginController {
     public void saveEdit(User user,HttpServletResponse response){
         AjaxRetBean<JSONObject> returnBean =  new AjaxRetBean<> ();
         user.setCreateTime(new Date());
+        user.setRoleId(user.getRoleId().replaceAll("\\[","").replaceAll("]",""));
         try {
             if(user.getUserPsw().equals(user.getUserPsw2())){
                 userServiceImpl.updateUserById(user);

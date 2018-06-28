@@ -39,6 +39,8 @@ public class User extends Model<User> {
     @TableField(exist=false)
     private List<String> roleIds;
     @TableField(exist=false)
+    private List<String> roleNames;
+    @TableField(exist=false)
     private String deptName;
     @TableField(exist=false)
     private String userPsw2;
@@ -177,5 +179,20 @@ public class User extends Model<User> {
 
     public void setUserPsw2(String userPsw2) {
         this.userPsw2 = userPsw2;
+    }
+
+    public List<String> getRoleNames() {
+        return roleNames;
+    }
+
+    public void setRoleNames(List<String> roleNames) {
+        this.roleNames = roleNames;
+    }
+
+    public void addRoleNames(String roleNames) {
+        if(this.roleNames == null){
+            this.roleNames = new ArrayList<>();
+        }
+        this.roleNames.add(roleNames);
     }
 }

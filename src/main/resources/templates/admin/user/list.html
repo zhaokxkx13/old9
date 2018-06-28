@@ -5,12 +5,12 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>用户管理</title>
-    <link rel="shortcut icon" href="favicon.ico"/>
-    <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"/>
-    <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet"/>
-    <link href="/css/animate.css" rel="stylesheet"/>
-    <link href="/css/style.css?v=4.1.0" rel="stylesheet"/>
-    <link href="/css/plugins/treeview/bootstrap-treeview.css" rel="stylesheet"/>
+    <link rel="shortcut icon" href="${ctxPath}/css/favicon.ico"/>
+    <link href="${ctxPath}/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"/>
+    <link href="${ctxPath}/css/font-awesome.css?v=4.4.0" rel="stylesheet"/>
+    <link href="${ctxPath}/css/animate.css" rel="stylesheet"/>
+    <link href="${ctxPath}/css/style.css?v=4.1.0" rel="stylesheet"/>
+    <link href="${ctxPath}/css/plugins/treeview/bootstrap-treeview.css" rel="stylesheet"/>
 </head>
 
 <body class="gray-bg">
@@ -25,18 +25,26 @@
                     <div class="col-sm-12">
                         <div class="btn-group hidden-xs" id="exampleToolbar" role="group">
                             <div class="col-sm-8">
+                            @if(shiro.hasPermission("usermgr_add")){
                             <button class="btn btn-outline btn-success  dim" type="button" onclick="addUser();">
                                 <i class="fa fa-plus">&nbsp;新增</i>
                             </button>
+                            @}
+                            @if(shiro.hasPermission("usermgr_show")){
                             <button id="showButton" class="btn btn-outline btn-info  dim" type="button" onclick="showUser();">
                                 <i class="fa fa-paste">&nbsp;查看</i>
                             </button>
+                            @}
+                            @if(shiro.hasPermission("usermgr_edit")){
                             <button id="editButton" class="btn btn-outline btn-warning  dim" type="button" onclick="editUser();">
                                 <i class="fa fa-edit">&nbsp;编辑</i>
                             </button>
+                            @}
+                            @if(shiro.hasPermission("usermgr_del")){
                             <button id="delButton" class="btn btn-outline btn-danger  dim " type="button" onclick="delUser();">
                                 <i class="fa fa-trash">&nbsp;删除</i>
                             </button>
+                            @}
                             </div>
                             <div class="input-group col-sm-4">
                                 <span class="input-group-btn">
@@ -54,24 +62,24 @@
 </div>
 
 <!-- 全局js -->
-<script src="/js/jquery.min.js?v=2.1.4"></script>
-<script src="/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="${ctxPath}/js/jquery.min.js?v=2.1.4"></script>
+<script src="${ctxPath}/js/bootstrap.min.js?v=3.3.6"></script>
 
 <!-- Bootstrap table -->
-<script src="/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
-<script src="/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
-<script src="/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="${ctxPath}/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="${ctxPath}/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script src="${ctxPath}/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
 
 <!-- Peity -->
-<script src="/js/plugins/peity/jquery.peity.min.js"></script>
-<script src="/js/plugins/layer/layer.min.js"></script>
+<script src="${ctxPath}/js/plugins/peity/jquery.peity.min.js"></script>
+<script src="${ctxPath}/js/plugins/layer/layer.min.js"></script>
 
 <!-- 自定义js -->
 <!-- <script src="${ctx!}/admin/js/content.js?v=1.0.0"></script> -->
-<script src="/js/admin/user/list.js"></script>
+<script src="${ctxPath}/js/admin/user/list.js"></script>
 
 <!-- Bootstrap-Treeview plugin javascript-->
-<script src="/js/plugins/treeview/bootstrap-treeview.js"></script>
+<script src="${ctxPath}/js/plugins/treeview/bootstrap-treeview.js"></script>
 
 <!--<script id="operateHtml" type="text/html">
     <button class="btn btn-primary btn-xs" type="button" onclick="edit('{{row.id}}')">

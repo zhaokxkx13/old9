@@ -3,6 +3,7 @@ var BASE_URL = 'js/plugins/webuploader';
 $(document).ready(function () {
     //初始化部门树
     initDeptTree();
+    initRoleSelect();
 
     $("#userForm").validate({
         rules: {
@@ -83,6 +84,24 @@ function initDeptTree() {
     });
 }
 
+function initRoleSelect() {
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/role/list",
+        success: function(ret){
+            if(ret.records){
+                var records = ret.records;
+                for(var i=0;i<records.length;i++){
+                    $("#roleIdsTmp").append("<option value='"+records[i].id+"'>"+records[i].name+"</option>");
+                }
+            }else{
+                layer.msg("角色信息获取失败！", {time: 3000,icon:2},function () {});
+            }
+        }
+    });
+}
+
 function hideDeptTree() {
     var tree = $('#deptTree').css('display');
     if(tree == 'none'){
@@ -90,4 +109,33 @@ function hideDeptTree() {
     }else{
         $('#deptTree').hide();
     }
+}
+
+function selectRoles(value) {
+    var selectedOption=value.options[value.selectedIndex];
+    var tempName = selectedOption.text;
+    var tempId = selectedOption.value;
+
+    var reg = new RegExp(" ","g");//g,表示全部替换
+    var roleIds =  $('#roleIds').val().replace("[","").replace("]","").replace(reg,"");
+    var roleNames =  $('#roleNames').val().replace("[","").replace("]","").replace(reg,"");
+    var roleIdsArr = roleIds.split(",");
+    var roleNamesArr = roleNames.split(",");
+    if(roleIds.length>0){
+        var hadIndex = roleIdsArr.indexOf(tempId);
+        if(hadIndex>=0){
+            roleIdsArr.splice(hadIndex, 1);
+            roleNamesArr.splice(hadIndex, 1);
+            $('#roleIds').val(roleIdsArr.toString());
+            $('#roleNames').val(roleNamesArr.toString());
+        }else{
+            $('#roleIds').val(roleIds+","+tempId);
+            $('#roleNames').val(roleNames+","+tempName);
+        }
+    }else{
+        $('#roleIds').val(tempId);
+        $('#roleNames').val(tempName);
+    }
+    $('#roleIds').val("["+$('#roleIds').val()+"]");
+    $('#roleNames').val("["+$('#roleNames').val()+"]");
 }

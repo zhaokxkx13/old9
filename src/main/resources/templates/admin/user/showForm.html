@@ -5,14 +5,13 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title> - 查看用户信息</title>
-    <link rel="shortcut icon" href="favicon.ico"/>
-    <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"/>
-    <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet"/>
-    <link href="/css/animate.css" rel="stylesheet"/>
-    <link href="/css/style.css?v=4.1.0" rel="stylesheet"/>
-    <link rel="stylesheet" type="text/css" href="/css/plugins/webuploader/webuploader.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/demo/webuploader-demo.css"/>
-    <link href="/css/plugins/treeview/bootstrap-treeview.css" rel="stylesheet"/>
+    <link href="${ctxPath}/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"/>
+    <link href="${ctxPath}/css/font-awesome.css?v=4.4.0" rel="stylesheet"/>
+    <link href="${ctxPath}/css/animate.css" rel="stylesheet"/>
+    <link href="${ctxPath}/css/style.css?v=4.1.0" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="${ctxPath}/css/plugins/webuploader/webuploader.css"/>
+    <link rel="stylesheet" type="text/css" href="${ctxPath}/css/demo/webuploader-demo.css"/>
+    <link href="${ctxPath}/css/plugins/treeview/bootstrap-treeview.css" rel="stylesheet"/>
 </head>
 
 <body class="gray-bg">
@@ -23,27 +22,33 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">用户名：</label>
                         <div class="col-sm-9">
-                            <input type="text" disabled="" th:value="${user.userAcc}" class="form-control"/>
+                            <input type="text" disabled="" value="${user.userAcc}" class="form-control"/>
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">昵称：</label>
                         <div class="col-sm-9">
-                            <input type="text" disabled="" th:value="${user.nickName}" class="form-control"/>
+                            <input type="text" disabled="" value="${user.nickName}" class="form-control"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">所属机构：</label>
                         <div class="col-sm-9">
-                            <input type="text" disabled="" th:value="${user.deptName}" class="form-control"/>
+                            <input type="text" disabled="" value="${user.deptName}" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">角色：</label>
+                        <div class="col-sm-9">
+                            <input id="roleNames" type="text" disabled="" value="${user.roleNames}" class="form-control"/>
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">备注：</label>
                         <div class="col-sm-9">
-                            <input type="text" disabled="" th:value="${user.description}" class="form-control"/>
+                            <input type="text" disabled="" value="${user.description}" class="form-control"/>
                         </div>
                     </div>
                 </form>
@@ -88,21 +93,21 @@
 
 
     <!-- 全局js -->
-    <script src="/js/jquery.min.js?v=2.1.4"></script>
-    <script src="/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="${ctxPath}/js/jquery.min.js?v=2.1.4"></script>
+    <script src="${ctxPath}/js/bootstrap.min.js?v=3.3.6"></script>
 
     <!-- 自定义js-->
-    <script src="/js/admin/user/showForm.js"></script>
+    <script src="${ctxPath}/js/admin/user/showForm.js"></script>
     <!-- Web Uploader -->
-    <script src="/js/plugins/webuploader/webuploader.min.js"></script>
-    <script src="/js/demo/webuploader-demo.js"></script>
+    <script src="${ctxPath}/js/plugins/webuploader/webuploader.min.js"></script>
+    <script src="${ctxPath}/js/demo/webuploader-demo.js"></script>
 
     <!-- jQuery Validation plugin javascript-->
-    <script src="/js/plugins/treeview/bootstrap-treeview.js"></script>
-    <script src="/js/plugins/validate/jquery.validate.min.js"></script>
-    <script src="/js/plugins/validate/messages_zh.min.js"></script>
-    <script src="/js/plugins/layer/layer.min.js"></script>
-    <script src="/js/plugins/layer/laydate/laydate.js"></script>
+    <script src="${ctxPath}/js/plugins/treeview/bootstrap-treeview.js"></script>
+    <script src="${ctxPath}/js/plugins/validate/jquery.validate.min.js"></script>
+    <script src="${ctxPath}/js/plugins/validate/messages_zh.min.js"></script>
+    <script src="${ctxPath}/js/plugins/layer/layer.min.js"></script>
+    <script src="${ctxPath}/js/plugins/layer/laydate/laydate.js"></script>
 
 </body>
 

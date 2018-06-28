@@ -38,7 +38,7 @@ public class MenuController {
 
     @GetMapping("/index")
     public String menuIndex() {
-        return "/admin/menu/list";
+        return "admin/menu/list";
     }
 
     @GetMapping("/listByRole")
