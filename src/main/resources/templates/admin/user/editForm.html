@@ -9,8 +9,7 @@
     <link href="${ctxPath}/css/font-awesome.css?v=4.4.0" rel="stylesheet"/>
     <link href="${ctxPath}/css/animate.css" rel="stylesheet"/>
     <link href="${ctxPath}/css/style.css?v=4.1.0" rel="stylesheet"/>
-    <link rel="stylesheet" type="text/css" href="${ctxPath}/css/plugins/webuploader/webuploader.css"/>
-    <link rel="stylesheet" type="text/css" href="${ctxPath}/css/demo/webuploader-demo.css"/>
+    <link href="${ctxPath}/css/layui.css" rel="stylesheet" media="all">
     <link href="${ctxPath}/css/plugins/treeview/bootstrap-treeview.css" rel="stylesheet"/>
 </head>
 
@@ -68,38 +67,28 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">备注：</label>
                         <div class="col-sm-9">
+                            <input type="hidden" id="avatar" name="avatar" value="${user.avatar}"/>
                             <input type="text" id="description" name="description" value="${user.description}" placeholder="请输入备注" class="form-control"/>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="col-sm-6">
-                <form class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">头像：</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-static">您可以尝试文件拖拽,或使用QQ截屏工具,然后激活窗口后粘贴,或点击添加图片按钮,来上传您的头像.</p>
-                        </div>
-                    </div>
-                    <div id="uploader" class="wu-example">
-                        <div class="queueList">
-                            <div id="dndArea" class="placeholder">
-                                <div id="filePicker"></div>
-                            </div>
-                        </div>
-                        <div class="statusBar" style="display:none;">
-                            <div class="progress">
-                                <span class="text">0%</span>
-                                <span class="percentage"></span>
-                            </div>
-                            <div class="info"></div>
-                            <div class="btns">
-                                <div id="filePicker2"></div>
-                                <div class="uploadBtn">开始上传</div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">头像：</label>
+                    <div class="col-sm-9">
+                        <div class="layui-upload">
+                            <div class="layui-upload-list">
+                                @if(tool.isEmpty(user.avatar)){
+                                <img class="layui-upload-img " src="${ctxPath}/img/webuploader.png" id="imageShow" />
+                                @}else{
+                                <img class="layui-upload-img " src="${user.avatar}" id="imageShow" />
+                                @}
+                                <p id="messText"></p>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
             <div class="col-sm-12">
                 <div class="col-sm-4"></div>
@@ -121,17 +110,49 @@
 
     <!-- 自定义js-->
     <script src="${ctxPath}/js/admin/user/editForm.js"></script>
-    <!-- Web Uploader -->
-    <script src="${ctxPath}/js/plugins/webuploader/webuploader.min.js"></script>
-    <script src="${ctxPath}/js/demo/webuploader-demo.js"></script>
+    <!-- layui upload -->
+    <script src="${ctxPath}/js/layui.js" charset="utf-8"></script>
 
     <!-- jQuery Validation plugin javascript-->
     <script src="${ctxPath}/js/plugins/treeview/bootstrap-treeview.js"></script>
     <script src="${ctxPath}/js/plugins/validate/jquery.validate.min.js"></script>
     <script src="${ctxPath}/js/plugins/validate/messages_zh.min.js"></script>
-    <script src="${ctxPath}/js/plugins/layer/layer.min.js"></script>
-    <script src="${ctxPath}/js/plugins/layer/laydate/laydate.js"></script>
-
+    <script>
+        layui.use('upload', function(){
+            var upload = layui.upload;
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#imageShow'
+                ,url: '/upload/'
+                ,data: {type:1}
+                ,before: function(obj){
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function(index, file, result){
+                        $('#imageShow').attr('src', result); //图片链接（base64）
+                    });
+                    layer.load(0, {shade: false});
+                }
+                ,done: function(res){
+                    layer.closeAll('loading');
+                    //如果上传失败
+                    if(res.success){
+                        $('#avatar').val(res.data);
+                    }else{
+                        return layer.msg('上传失败');
+                    }
+                    //上传成功
+                }
+                ,error: function(){
+                    //演示失败状态，并实现重传
+                    var demoText = $('#messText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function(){
+                        uploadInst.upload();
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

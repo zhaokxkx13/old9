@@ -81,7 +81,7 @@ jQuery(function() {
         disableGlobalDnd: true,
 
         chunked: false,
-        server: '/ocr/upload',
+        server: '/upload',
         fileNumLimit: 1,    //文件数
         fileSizeLimit: 5 * 1024 * 1024,    // 50 M
         fileSingleSizeLimit: 3 * 1024 * 1024,   // 3 M
@@ -130,7 +130,6 @@ jQuery(function() {
         if ( file.getStatus() === 'invalid' ) {
             showError( file.statusText );
         } else {
-            // @todo lazyload
             $wrap.text( '预览中' );
             uploader.makeThumb( file, function( error, src ) {
                 if ( error ) {
@@ -393,7 +392,7 @@ jQuery(function() {
     uploader.on( 'uploadSuccess', function( file,response ) {
         var resultStr = response.data;
         //alert(resultStr);
-        $( '#orcResult' ).html(resultStr);
+        $('#uploadReturnFile').val(resultStr).change();
     });
 
     uploader.onError = function( code ) {

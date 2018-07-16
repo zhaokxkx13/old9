@@ -5,6 +5,9 @@ import com.cn.iris.admin.entity.User;
 import com.cn.iris.admin.service.IMenuService;
 import com.cn.iris.admin.service.IUserService;
 import com.cn.iris.common.core.shiro.ShiroUtil;
+import com.cn.iris.common.util.AjaxRetBean;
+import com.cn.iris.common.util.FileUploadUtil;
+import com.cn.iris.common.util.ResWriteUtil;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -12,11 +15,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,4 +94,20 @@ public class SysController {
         return "first";
     }
 
+    @PostMapping("/upload")
+    @ResponseBody
+    public void upload(@RequestParam("file") MultipartFile file,@RequestParam("type") int type,HttpServletResponse response){
+        AjaxRetBean<Object> returnBean =  new AjaxRetBean<> ();
+        try {
+            String picture = FileUploadUtil.getFilePathName(file,type);
+            returnBean.setSuccess(true);
+            returnBean.setData(picture);
+            logger.info("上传文件成功："+picture);
+        }catch (IOException e){
+            logger.error("文件上传失败："+e.getMessage());
+            returnBean.setSuccess(true);
+            returnBean.setData(e.getMessage());
+        }
+        ResWriteUtil.writeObject(response,returnBean);
+    }
 }

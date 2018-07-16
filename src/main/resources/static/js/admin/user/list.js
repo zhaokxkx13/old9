@@ -53,7 +53,11 @@ $(document).ready(function () {
             {title: "昵称",field: "nickName"},
             {title: "所属部门",field: "deptName"},
             {title: "盐资源",field: "salt"},
-            {title: "头像",field: "avatar"},
+            {title: "头像",field: "avatar",
+                formatter: function (value, row, index) {
+                   return '<button type="button" class="btn btn-primary btn-sm" id="showImage_'+row.id+'" onclick="showUserImage(\''+row.id+'\',\''+row.avatar+'\')">点击预览</button>';
+
+                }},
             {title: "创建日期",field: "createTime",
                 formatter:function (value, row, index) {
                     return changeDateFormat(value)
@@ -107,6 +111,23 @@ function showUser() {
         });
     }
 }
+//预览头像
+function showUserImage(id,url) {
+    if(url && url != 'undefined'){
+        //return '<img class="layui-upload-img " src="'+url+'"/>';
+        layer.tips('<img class="layui-upload-img " src="'+url+'"/>', '#showImage_'+id, {
+            tips: [4, '#FFFFFF'],
+            time: 3000
+        });
+    }else{
+        layer.tips('<img class="layui-upload-img " src="/img/webuploader.png"/>', '#showImage_'+id, {
+            tips: [4, '#FFFFFF'],
+            time: 3000
+        });
+    }
+
+}
+
 //编辑
 function editUser(){
     var selectNodes = $("#table_list").bootstrapTable('getSelections');

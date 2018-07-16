@@ -66,11 +66,9 @@ public class ShiroConfig {
         filterMap.put("/js/**","anon");
         filterMap.put("/welcome","anon");
         filterMap.put("/userlogin","anon");
-        //filterMap.put("/login","anon");
         filterMap.put("/getVeCode","anon");
         filterMap.put("/logout","logout");
         filterMap.put("/plugin/**","anon");
-        //filterMap.put("/user/**","per");
         filterMap.put("/**","authc");
         sfbBean.setFilterChainDefinitionMap(filterMap);
         return sfbBean;

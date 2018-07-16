@@ -2,14 +2,12 @@ package com.cn.iris.admin.controller;
 
 import com.cn.iris.common.util.AipOcrUtil;
 import com.cn.iris.common.util.AjaxRetBean;
+import com.cn.iris.common.util.FileUploadUtil;
 import com.cn.iris.common.util.ResWriteUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -39,36 +37,12 @@ public class OcrController {
 
     @PostMapping("/upload")
     @ResponseBody
-    public void savePic(HttpServletRequest request, HttpServletResponse response){
+    public void savePic(@RequestParam("file") String file, HttpServletResponse response){
         AjaxRetBean<Object> returnBean =  new AjaxRetBean<> ();
         try {
-            try {
-                Thread.sleep(1000);
-            } catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-            String picture = "";
-            MultipartHttpServletRequest muRequest = (MultipartHttpServletRequest)request;
-            Map<String, MultipartFile> files = muRequest.getFileMap();//得到文件map对象
-            String uploadUrl = request.getSession().getServletContext().getRealPath("/")+"upload/";//得到当前工程路径拼接上文件名
-            File dir = new File(uploadUrl);
-            if(!dir.exists())//目录不存在则创建
-                dir.mkdirs();
-            for(MultipartFile file :files.values()){
-                String fileName= new Date().getTime() + "_" + file.getOriginalFilename();
-                picture = uploadUrl+fileName;
-                File upFile = new File(uploadUrl+fileName);//创建文件对象
-                if(!upFile.exists()){//文件名不存在 则新建文件，并将文件复制到新建文件中
-                        upFile.createNewFile();
-                        file.transferTo(upFile);
-                }
-            }
-            String str = AipOcrUtil.UploadFile(picture);
-
+            String str = AipOcrUtil.UploadFile(file);
             returnBean.setSuccess(true);
             returnBean.setData(str);
-        } catch (IOException e) {
-            logger.error("文件上传错误："+e.getMessage());
         } catch (Exception e){
             logger.error(e.getMessage());
             returnBean.setSuccess(false);

@@ -5,14 +5,11 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>文字识别</title>
-    <link rel="shortcut icon" href="favicon.ico"/>
     <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"/>
     <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet"/>
     <link href="/css/animate.css" rel="stylesheet"/>
     <link href="/css/style.css?v=4.1.0" rel="stylesheet"/>
-
-    <link rel="stylesheet" type="text/css" href="/css/plugins/webuploader/webuploader.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/demo/webuploader-demo.css"/>
+    <link href="${ctxPath}/css/layui.css" rel="stylesheet" media="all">
 </head>
 
 <body class="gray-bg">
@@ -23,26 +20,10 @@
                 <h5>图片上传</h5>
             </div>
             <div class="ibox-content">
-                <div class="row row-lg">
-                    <div class="alert alert-success" id="ocrResult">
-                        <p>&nbsp;&nbsp;您可以尝试文件拖拽，使用QQ截屏工具，然后激活窗口后粘贴，或者点击添加图片按钮，来上传图片。</p>
-                    </div>
-                    <div id="uploader" class="wu-example">
-                        <div class="queueList">
-                            <div id="dndArea" class="placeholder">
-                                <div id="filePicker"></div>
-                                <p>将照片拖到这里，一次只可上传一张。</p>
-                            </div>
-                        </div>
-                        <div class="statusBar" style="display:none;">
-                            <div class="progress">
-                                <span class="text">0%</span>
-                                <span class="percentage"></span>
-                            </div><div class="info"></div>
-                            <div class="btns">
-                                <div id="filePicker2"></div><div class="uploadBtn">开始上传</div>
-                            </div>
-                        </div>
+                <div class="layui-upload">
+                    <div class="layui-upload-list">
+                        <img width="200px" height="200px" src="${ctxPath}/img/webuploader.png" id="imageShow" />
+                        <p id="messText"></p>
                     </div>
                 </div>
             </div>
@@ -75,13 +56,61 @@
 <!-- 自定义js -->
 <script src="/js/content.js?v=1.0.0"></script>
 
-<script type="text/javascript">
-    // 添加全局站点信息
-    var BASE_URL = '/js/plugins/webuploader';
-</script>
-<script src="/js/plugins/webuploader/webuploader.min.js"></script>
+<!-- layui upload -->
+<script src="${ctxPath}/js/layui.js" charset="utf-8"></script>
 
-<script src="/js/webuploader/webuploader-demo.js"></script>
+<script type="text/javascript">
+    layui.use('upload', function(){
+        var upload = layui.upload;
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#imageShow'
+            ,url: '/upload/'
+            ,data: {type:0}
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#imageShow').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.success){
+                    getFullName(res.data);
+                }else{
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#messText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+    });
+
+    function getFullName(file) {
+        $.ajax({
+            type: "POST",
+            url: "/ocr/upload",
+            data:{file:file},
+            beforeSend: function () {
+                layer.load(0, {shade: false});
+            },
+            success: function(ret){
+                if(ret.success){
+                    var resultStr = ret.data;
+                    $( '#orcResult' ).html(resultStr);
+                }
+                layer.closeAll('loading');
+            }
+        });
+    }
+</script>
 
 </body>
 

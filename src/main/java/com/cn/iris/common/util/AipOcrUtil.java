@@ -28,7 +28,7 @@ public class AipOcrUtil {
 
         // 调用接口
         String resultStr = "";
-        org.json.JSONObject res = client.basicGeneral(path, new HashMap<String, String>());
+        org.json.JSONObject res = client.basicGeneralUrl(path, new HashMap<String, String>());
         JSONObject jsonObject = JSONObject.parseObject(res.toString());
         JSONArray resultList = jsonObject.getJSONArray("words_result");
         for(Object result:resultList){
