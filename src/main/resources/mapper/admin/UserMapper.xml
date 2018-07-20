@@ -33,6 +33,7 @@
           SET user_psw = #{userPsw},
                nick_name = #{nickName},
                role_id = #{roleId},
+               avatar = #{avatar},
                create_time = #{createTime},
                description = #{description},
                dept_id = #{deptId}
